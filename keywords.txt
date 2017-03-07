@@ -1,0 +1,38 @@
+#######################################
+# Syntax Coloring Map for AF_MotorShield_V2
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+AF_MotorShield	KEYWORD1
+AF_DCMotor	KEYWORD1
+AF_StepperMotor	KEYWORD1
+MotorMode	KEYWORD1
+MotorDirection	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+Run	KEYWORD2
+Speed	KEYWORD2
+StepTime	KEYWORD2
+OneStep	KEYWORD2
+Release	KEYWORD2
+GetDCMotor	KEYWORD2
+GetStepperMotor	KEYWORD2
+SetPin	KEYWORD2
+SetPWM	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+FORWARD	LITERAL1
+BACKWARD	LITERAL1
+BRAKE	LITERAL1
+RELEASE	LITERAL1
+SINGLE	LITERAL1
+DOUBLE	LITERAL1
+INTERLEAVE	LITERAL1
+MICROSTEP	LITERAL1
+
