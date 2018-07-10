@@ -19,14 +19,23 @@ Original Copyright (c) 2012, Adafruit Industries.  All rights reserved.
 #define _AF_MotorShield_h_
 
 #include <inttypes.h>
+#include <RTL_Stdlib.h>
 #include "utility/AF_MS_PWMServoDriver.h"
-#include "AF_StepperMotor.h"
-#include "AF_DCMotor.h"
+//#include "AF_StepperMotor2.h"
+#include "AF_DCMotor2.h"
 
 
-class AF_MotorShield
+class AF_MotorShield2
 {
     DECLARE_CLASSNAME;
+
+    // Declare the motor classes as friends so they can access the SetPin() and SetPWM() methods
+    friend class AF_DCMotor2;
+    friend class AF_StepperMotor2;
+
+    /*--------------------------------------------------------------------------
+    Constructors
+    --------------------------------------------------------------------------*/
 
     //**************************************************************************
     /// Constructor.
@@ -36,10 +45,11 @@ class AF_MotorShield
     /// any combination of the address jumper pads on the board) then this parameter
     /// must match the new address of the board.
     //**************************************************************************
-    public: AF_MotorShield(uint8_t addr = 0x60);
+    public: AF_MotorShield2(uint8_t addr = 0x60);
 
+    
     /*--------------------------------------------------------------------------
-    Public interface
+    Public methods
     --------------------------------------------------------------------------*/
 
     //**************************************************************************
@@ -50,17 +60,23 @@ class AF_MotorShield
     public: void Begin(uint16_t freq = 1600);
 
     //**************************************************************************
-    /// Factory method to get one of four DC motors attached to the MotorShield.
+    /// Attaches a DC motor to the MotorShield.
     //**************************************************************************
-    public: AF_DCMotor* GetDCMotor(uint8_t motorNum);
+    public: bool Attach(AF_DCMotor2& motor, uint8_t motorID);
 
     //**************************************************************************
-    /// Factory method to get one of two stepper motors attached to the MotorShield.
+    /// Detaches a DC motor from the MotorShield.
     //**************************************************************************
-    public: AF_StepperMotor* GetStepperMotor(uint8_t motorNum, uint16_t steps);
+    public: void Detach(AF_DCMotor2& motor);
 
+    //**************************************************************************
+    /// Attach a stepper motor to one of 2 stepper motor ports on the MotorShield.
+    //**************************************************************************
+    //public: bool Attach(AF_StepperMotor2& motor, uint8_t motorNum, uint16_t steps);
+
+    
     /*--------------------------------------------------------------------------
-    Internal implementation
+    Internal methods
     --------------------------------------------------------------------------*/
 
     //**************************************************************************
@@ -73,18 +89,14 @@ class AF_MotorShield
     //**************************************************************************
     private: void SetPin(uint8_t pin, boolean value);
 
+    
     /*--------------------------------------------------------------------------
     Internal state
     --------------------------------------------------------------------------*/
-    private: uint8_t  _addr;
-    private: uint16_t _freq;
-    private: AF_MS_PWMServoDriver _pwm;
-    private: AF_DCMotor _dcMotors[4];
-    private: AF_StepperMotor _stepperMotors[2];
-
-    // Declare the motor classes as friends so they can access the SetPin() and SetPWM() methods
-    friend class AF_DCMotor;
-    friend class AF_StepperMotor;
+    private: uint8_t  _addr;            // I2C address
+    private: uint8_t  _ports;           // Allocation bits for 4 motor ports (uses 4 LS bits)
+    private: uint16_t _freq;            // PWM frequency
+    private: AF_MS_PWMServoDriver _pwm; // Helper class for PWM
 };
 
 #endif
